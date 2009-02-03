@@ -8,8 +8,9 @@ class ReferralsReports < Scout::Plugin
     ENV['RAILS_ENV'] = option('environment')
     ignore_users = "user_id not in(1,2,3,11,12,13,14,15,17,21,24,29)"
     begin
-      require "#{@options[:path_to_app]}/config/environment.rb"
-      report( :total_referrals => Referral.count(:conditions => ignore_users) )
+      require "#{option('path_to_app')}/config/environment.rb"
+      report(:total_referrals => Referral.count(:conditions => ignore_users)
+      )
     rescue
       error(:subject => "Unable to monitor Referrals",
             :body    => "The following exception was raised:
