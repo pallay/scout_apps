@@ -4,12 +4,12 @@ class ReferralReport < Scout::Plugin
     ENV['RAILS_ENV'] = option('environment')
     require "#{option('path_to_app')}/config/environment"
 
-    ignore_users = "id not in(1,2,3,11,12,13,14,15,17,21,24,29)"
+    ignore_users = "user_id not in(1,2,3,11,12,13,14,15,17,21,24,29)"
     Time.zone = 'London'
 
     data = Hash.new
-    data[:scout_time]   = Time.zone.now
-    data[:total_referrals]  = Referral.count(:conditions => ignore_users)
+    data[:scout_time]      = Time.zone.now
+    data[:total_referrals] = Referral.count(:conditions => ignore_users)
 
     {:report => data}
   rescue
