@@ -8,9 +8,13 @@ class InvitationReport < Scout::Plugin
     Time.zone = 'London'
 
     data = Hash.new
-    data[:scout_time]                  = Time.zone.now
-    data[:total_invitations]           = Invitation.count
-    data[:average_invitation_per_user] = sprintf("%.2f", Invitation.count(:conditions => ignore_users).to_f/Invitation.count(:group => :user_id, :conditions => ignore_users).size)
+    data[:scout_time] = Time.zone.now
+    data[:invitations_total] = Invitation.count(:conditions => ignore_users)
+    data[:invitations_redeemed] = Invitation.count(:conditions => ignore_users + 'and used is true')
+    data[:invitations_not_sent] = Invitation.count(:conditions => ignore_users + 'and sent_at is null')
+    data[:invitations_sent_and_unused] = Invitation.count(:conditions => ignore_users + 'and sent_at is not null and used is false')
+    data[:invitations_sent_unused_and_old] = Invitation.count(:conditions => ignore_users + 'and sent_at is not null and used is false')
+    data[:invitations_sent_(av_num_per_user)] = sprintf("%.2f", Invitation.count(:conditions => ignore_users).to_f/Invitation.count(:group => :user_id, :conditions => ignore_users).size)
            
     {:report => data}
   rescue

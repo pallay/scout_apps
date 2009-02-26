@@ -8,9 +8,10 @@ class ReferralReport < Scout::Plugin
     Time.zone = 'London'
 
     data = Hash.new
-    data[:scout_time]      = Time.zone.now
-    data[:total_referrals] = Referral.count(:conditions => ignore_users)
-    data[:average_referral_per_user] = sprintf("%.2f", Referral.count(:conditions => ignore_users).to_f/Referral.count(:group => :user_id, :conditions => ignore_users).size)
+    data[:scout_time] = Time.zone.now
+    data[:referrals_total] = Referral.count(:conditions => ignore_users)
+    data[:referrals_unique] = Referral.count(:distinct => true, :select => :story_id)
+    data[:referrals_sent_(av_num_per_user)] = sprintf("%.2f", Referral.count(:conditions => ignore_users).to_f/Referral.count(:group => :user_id, :conditions => ignore_users).size)
 
     {:report => data}
   rescue
