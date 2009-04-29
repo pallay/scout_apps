@@ -14,6 +14,7 @@ class UserReport < Scout::Plugin
     data[:users_on_now] = User.count(:conditions => ['user_logs.created_at > ?', Time.now - 10.minutes], :select => 'users.id', :joins => 'LEFT JOIN user_logs ON user_logs.user_id = users.id', :group => 'users.id').size
     data[:users_with_activity_last_week] = User.count(:conditions => ['user_logs.created_at > ?', Time.now - 1.week], :select => 'users.id', :joins => 'LEFT JOIN user_logs ON user_logs.user_id = users.id', :group => 'users.id').size
     data[:users_with_activity_last_month] = User.count(:conditions => ['user_logs.created_at > ?', Time.now - 1.month], :select => 'users.id', :joins => 'LEFT JOIN user_logs ON user_logs.user_id = users.id', :group => 'users.id').size
+    data[:existing_users_with_activity_last_month] = User.activity_within(1.month).all.size - User.count(:conditions => ['created_at > ?', 1.month.ago])
     data[:users_with_no_activity_three_month] = User.count(:conditions => ['user_logs.created_at < ?', Time.now - 3.month], :select => 'users.id', :joins => 'LEFT JOIN user_logs ON user_logs.user_id = users.id', :group => 'users.id').size
 
     {:report => data}
