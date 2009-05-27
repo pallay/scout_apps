@@ -6,7 +6,8 @@ class StoryReport < Scout::Plugin
     require "/opt/ensembli.com/current/config/environment"
     #require "#{option('path_to_app')}/config/environment"
 
-    ignore_users = "user_id not in(1,2,3,11,12,13,14,15,17,21,24,29)"
+    # ignore_users = "id not in(1,2,3,11,12,13,14,15,17,21,24,29)"
+    ignore_users = "user_id not in(1,2,3,21,24,29)"
 
     data = Hash.new
     data[:stories_presented_av_num_per_user] = sprintf("%02d", Story.count(:conditions => 'viewed_at is not null').to_f/User.count)
