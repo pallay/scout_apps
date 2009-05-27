@@ -12,7 +12,7 @@ class UserReport < Scout::Plugin
     data = Hash.new
     data[:users_total] = User.count(:conditions => ignore_users)
     data[:twitter_identities_total] = TwitterIdentity.count(:conditions => ignore_users)
-    data[:facebook_identities_total] = FacebookIdentity.count(:conditions => ignore_users)
+    # data[:facebook_identities_total] = FacebookIdentity.count(:conditions => ignore_users)
     data[:users_new_registrations] = User.count(:conditions => ignore_users + "and created_at > '#{1.week.ago}'")
     data[:users_on_now] = User.count(:conditions => ['user_logs.created_at > ?', Time.now - 10.minutes], :select => 'users.id', :joins => 'LEFT JOIN user_logs ON user_logs.user_id = users.id', :group => 'users.id').size
     data[:users_with_activity_last_week] = User.count(:conditions => ['user_logs.created_at > ?', Time.now - 1.week], :select => 'users.id', :joins => 'LEFT JOIN user_logs ON user_logs.user_id = users.id', :group => 'users.id').size
