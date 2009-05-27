@@ -10,6 +10,8 @@ class ReferralReport < Scout::Plugin
 
     data = Hash.new
     data[:referrals_total] = Referral.count(:conditions => ignore_users)
+    data[:referrals_twitter] = TwitterReferral.count(:conditions => ignore_users)
+    data[:referrals_facebook] = FacebookReferral.count(:conditions => ignore_users)
     data[:referrals_unique] = Referral.count(:conditions => ignore_users, :distinct => true, :select => :story_id)
     data[:referrals_sent_av_num_per_user] = sprintf("%.2f", Referral.count(:conditions => ignore_users).to_f/Referral.count(:group => :user_id, :conditions => ignore_users).size)
 
