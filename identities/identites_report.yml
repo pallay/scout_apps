@@ -1,0 +1,9 @@
+options:
+  path_to_app:
+    name: Path to Rails App
+    notes: Specify the full path to the Ensembli Rails Application.
+    default: /opt/ensembli.com/current
+  environment:
+    name: Rails environment to use
+    notes: Production, Development, Staging, etc...
+    default: production
