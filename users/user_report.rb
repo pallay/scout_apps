@@ -16,7 +16,7 @@ class UserReport < Scout::Plugin
     data[:users_with_activity_last_week] =  UserLog.count(:distinct => true, :select => :user_id, :conditions => ['created_at > ?', Time.now - 1.week])
     data[:users_with_activity_last_month] = UserLog.count(:distinct => true, :select => :user_id, :conditions => ['created_at > ?', Time.now - 1.month])
     data[:existing_users_with_activity_last_month] = UserLog.count(:distinct => true, :select => :user_id, :conditions => ['created_at > ?', Time.now - 1.month]) - User.count(:conditions => ['created_at > ?', 1.month.ago])
-    data[:users_with_no_activity_three_month] = User.count(:conditions => ['max(user_logs.created_at) < ?', Time.now - 3.month], :select => 'users.id', :joins => 'LEFT JOIN user_logs ON user_logs.user_id = users.id', :group => 'users.id').size
+    data[:users_with_no_activity_three_month] = UserLog.count(:having => ['max(created_at) < ?', Time.now - 3.month], :select => 'user_id', :distinct => true)
 
     {:report => data}
   rescue
