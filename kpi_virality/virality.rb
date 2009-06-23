@@ -15,8 +15,8 @@ class Virality < Scout::Plugin
     data[:invitations_av_per_user] = sprintf("%.1f", Invitation.count(:conditions => ignore_users).to_f/Invitation.count(:conditions => ignore_users, :group => :user_id).size)
     data[:invitations_redeemed] = Invitation.used.count
 
-    data[:referrals_seen_total] = UserLog.find_log_by('stories', 'show').count(:conditions => ignore_users)
-    data[:referrals_seen_non_users] = UserLog.find_log_by('stories', 'show').without_user.count 
+    data[:referrals_seen_total] = UserLog.count(:conditions => ignore_users + {"and controller='stories' and action='show'"})
+    data[:referrals_seen_non_users] = UserLog.count(:conditions => ignore_users + {"and controller='stories' and action='show' and user_id is null"})
 
     {:report => data}
   rescue

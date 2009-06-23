@@ -7,7 +7,7 @@ class Attractiveness < Scout::Plugin
     #require "#{option('path_to_app')}/config/environment"
 
     # ignore_users = "id not in(1,2,3,11,12,13,14,15,17,21,24,29)"
-    ignore_users = "user_id not in(1,2,3,21,24,29)"
+    ignore_users = "id not in(1,2,3,21,24,29)"
 
     data = Hash.new
     data[:users_new_registrations] = User.count(:conditions => ignore_users + "and created_at > '#{1.week.ago}'")
