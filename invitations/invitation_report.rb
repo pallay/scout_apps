@@ -11,7 +11,7 @@ class InvitationReport < Scout::Plugin
 
     data = Hash.new
     data[:invitations_total] = Invitation.count
-    data[:invitations_redeemed] = Invitation.count(:condition => 'used=true')
+    data[:invitations_redeemed] = Invitation.count(:conditions => 'used=true')
     data[:invitations_not_sent] = Invitation.waiting.count
     data[:invitations_sent_and_unused] = Invitation.sent.unused.count
     data[:invitations_sent_unused_and_old] = Invitation.old.waiting.count
