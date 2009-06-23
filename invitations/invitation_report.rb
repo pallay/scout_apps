@@ -14,7 +14,7 @@ class InvitationReport < Scout::Plugin
     data[:invitations_redeemed] = Invitation.count(:conditions => 'used=true')
     data[:invitations_not_sent] = Invitation.count(:conditions => 'sent_at is null')
     data[:invitations_sent_and_unused] = Invitation.count(:conditions => 'sent_at is not null and used=false')
-    data[:invitations_sent_unused_and_old] = Invitation.old.waiting.count(:conditions => ['sent_at  is null and created_at < ?', Time.now - 1.month])
+    data[:invitations_sent_unused_and_old] = Invitation.count(:conditions => ['sent_at  is null and created_at < ?', Time.now - 1.month])
     data[:invitations_sent_av_num_per_user] = sprintf("%.2f", Invitation.count(:conditions => ignore_users).to_f/Invitation.count(:group => :user_id, :conditions => ignore_users).size).to_f
 
     {:report => data}
