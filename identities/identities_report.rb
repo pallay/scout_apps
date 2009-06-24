@@ -11,7 +11,7 @@ class IdentitiesReport < Scout::Plugin
 
     data = Hash.new
     data[:twitter_identities_total] = TwitterIdentity.count(:conditions => ignore_users)
-    data[:facebook_identities_total] = FacebookIdentity.count(:conditions => ignore_users)
+    # data[:facebook_identities_total] = FacebookIdentity.count(:conditions => ignore_users)
     {:report => data}
   rescue
     {:error => {:subject => "Unable to monitor Identities",
