@@ -1,12 +1,9 @@
 class UserReport < Scout::Plugin
 
   def run
-    ENV['RAILS_ENV'] = 'production' 
-    # ENV['RAILS_ENV'] = option('environment')
-    require "/opt/ensembli.com/current/config/environment"
-    # require "#{option('path_to_app')}/config/environment"
+    ENV['RAILS_ENV'] = option('environment')
+    require "#{option('path_to_app')}/config/environment"
 
-    # ignore_users = "id not in(1,2,3,11,12,13,14,15,17,21,24,29)"
     ignore_users = "id not in(1,2,3,21,24,29)"
 
     data = Hash.new
@@ -16,7 +13,7 @@ class UserReport < Scout::Plugin
     data[:users_with_activity_last_week] =  UserLog.count(:distinct => true, :select => :user_id, :conditions => ['created_at > ?', Time.now - 1.week])
     data[:users_with_activity_last_month] = UserLog.count(:distinct => true, :select => :user_id, :conditions => ['created_at > ?', Time.now - 1.month])
     data[:existing_users_with_activity_last_month] = UserLog.count(:distinct => true, :select => :user_id, :conditions => ['created_at > ?', Time.now - 1.month]) - User.count(:conditions => ['created_at > ?', 1.month.ago])
-    data[:users_with_no_activity_three_month] = UserLog.count(:having => ['max(created_at) < ?', Time.now - 3.month], :select => 'user_id', :distinct => true)
+    data[:users_with_no_activity_three_month] = UserLog.count(:having => ['max(created_at) < ?', Time.now - 3.month], :select => :user_id, :distinct => true)
 
     {:report => data}
   rescue
